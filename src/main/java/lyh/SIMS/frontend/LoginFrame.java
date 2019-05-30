@@ -58,7 +58,7 @@ implements ActionListener{
 		passwordPanel.add(new JLabel("密码："));
 		passwordPanel.add(password);
 		InputPanel.setLayout(new GridLayout(3,1,10,10));
-		JLabel head = new JLabel(">>>>>>>>>>>>>>>>>学生成绩管理系统<<<<<<<<<<<<<<<<<",JLabel.CENTER);
+		JLabel head = new JLabel("学生成绩管理系统",JLabel.CENTER);
 		head.setFont(new Font("Dialog", 1, 30));
 		InputPanel.add(head);
 		InputPanel.add(userPanel);
@@ -69,10 +69,10 @@ implements ActionListener{
 	public LoginFrame() {
         super("Login");
         this.getContentPane().setLayout(new BorderLayout());
-        double width = Toolkit.getDefaultToolkit().getScreenSize().width/2; //得到当前屏幕分辨率的高
-        double height = Toolkit.getDefaultToolkit().getScreenSize().height/2;//得到当前屏幕分辨率的宽
-        this.setSize((int)width,(int)height);//设置大小
-        this.setLocation((int)width/2,(int)height/2); //设置窗体居中显示
+//        double width = Toolkit.getDefaultToolkit().getScreenSize().width; //得到当前屏幕分辨率的高
+//        double height = Toolkit.getDefaultToolkit().getScreenSize().height;//得到当前屏幕分辨率的宽
+        this.setSize(500,500);//设置大小
+        this.setLocationRelativeTo(null);  //设置窗体居中显示
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         initLayout();
         this.setVisible(true);
