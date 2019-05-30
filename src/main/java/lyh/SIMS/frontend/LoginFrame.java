@@ -18,6 +18,8 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import lyh.SIMS.database.UserData;
+
 public class LoginFrame extends JFrame
 implements ActionListener{
     private JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -25,9 +27,9 @@ implements ActionListener{
     private JPanel userPanel = new JPanel();
     private JPanel passwordPanel = new JPanel();
     private JButton ConfirmButton = new JButton("登录");
-    private JButton CancelButton = new JButton("退出");
-    private JTextField user = new JTextField(8);
-    private JPasswordField password = new JPasswordField(8);
+    private JButton RegitButton = new JButton("注册");
+    private JTextField user = new JTextField(12);
+    private JPasswordField password = new JPasswordField(12);
     
     private void initLayout() {
         initInputPannel();
@@ -38,27 +40,25 @@ implements ActionListener{
     }
     
 	private void initButtonPanel() {
-		// TODO Auto-generated method stub
         GridBagConstraints gridBag = new GridBagConstraints();
 		ConfirmButton.addActionListener(this);
 		buttonPanel.add(ConfirmButton);
         buttonPanel.add(ConfirmButton);
-        CancelButton.addActionListener(this);
-        buttonPanel.add(CancelButton);
+        RegitButton.addActionListener(this);
+        buttonPanel.add(RegitButton);
 	}
 
 	private void initInputPannel() {
-		// TODO Auto-generated method stub
 		user.addActionListener(this);
-		user.setPreferredSize(new Dimension(10,40));
+		user.setPreferredSize(new Dimension(6,40));
 		userPanel.add(new JLabel("账号："));
 		userPanel.add(user);
 		password.addActionListener(this);
-		password.setPreferredSize(new Dimension(10,40));
+		password.setPreferredSize(new Dimension(6,40));
 		passwordPanel.add(new JLabel("密码："));
 		passwordPanel.add(password);
-		InputPanel.setLayout(new GridLayout(3,1));
-		JLabel head = new JLabel(">>>>>>>>>>>>>>>>>小学生成绩管理系统<<<<<<<<<<<<<<<<<",JLabel.CENTER);
+		InputPanel.setLayout(new GridLayout(3,1,10,10));
+		JLabel head = new JLabel(">>>>>>>>>>>>>>>>>学生成绩管理系统<<<<<<<<<<<<<<<<<",JLabel.CENTER);
 		head.setFont(new Font("Dialog", 1, 30));
 		InputPanel.add(head);
 		InputPanel.add(userPanel);
@@ -80,7 +80,26 @@ implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		
+		if(ConfirmButton==(JButton)e.getSource()) {
+			String userstr = user.getText();
+			String passwordstr = String.valueOf(password.getPassword());
+			UserData ud = new UserData();
+			boolean vertification = false;
+			try {
+				vertification = ud.vertify(userstr, passwordstr);
+				}catch(NullPointerException e1) {
+					System.out.println("账号不存在！");
+				}finally {
+				if(vertification) {
+					System.out.println("登陆成功");
+					ud.close();
+				}
+				else {
+					System.out.println("登陆失败");
+					ud.close();
+				}
+			}
+		}
 	}
 	
 }
