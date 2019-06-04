@@ -1,4 +1,4 @@
-package lyh.SIMS.database;
+package lyh.SIMS.frontend;
 import java.sql.*;
 import java.util.Vector;
 public class UserData {
@@ -33,12 +33,21 @@ public class UserData {
 		}
 	}
 	
-	public boolean addUser(String username, String password) {
-		//TODO
-		return false;
+	public boolean addUser(String username, char[] password) {
+		try {
+			statement = connection.createStatement();
+	        String sql;
+	        sql = "INSERT INTO Users VALUES ('"+username+"', '"+ String.valueOf(password) + "');";
+	        statement.execute(sql);
+	        statement.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return false;
+			}
+		return true;
 	}
 	
-	public boolean deleteUser(String username, String password) {
+	public boolean deleteUser(String username) {
 		//TODO
 		return false;
 	}
