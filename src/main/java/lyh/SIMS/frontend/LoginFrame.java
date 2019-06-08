@@ -136,7 +136,7 @@ implements ActionListener{
 	public LoginFrame() {
         super("Login");
         this.getContentPane().setLayout(new BorderLayout());
-        BGP=new BackgroundPanel((new ImageIcon("C:\\Users\\l4728\\git\\SIMS\\src\\main\\java\\lyh\\SIMS\\frontend\\background.jpg")).getImage());
+        BGP=new BackgroundPanel((new ImageIcon("C:\\Users\\l4728\\git\\SIMS\\src\\main\\java\\lyh\\SIMS\\frontend\\yazi.jpg")).getImage());
         BGP.setBounds(0,0,100,100);
         new Color(getDefaultCloseOperation());
         this.add(BGP);
