@@ -1,6 +1,7 @@
 package lyh.SIMS.frontend;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -24,6 +25,7 @@ import javax.swing.JTextField;
 
 public class LoginFrame extends JFrame
 implements ActionListener{
+	private BackgroundPanel BGP;
     private JPanel ButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));    
     private JPanel ButtonPanel1 = new JPanel(new FlowLayout(FlowLayout.CENTER));
     private JPanel ButtonPanel2 = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -134,8 +136,10 @@ implements ActionListener{
 	public LoginFrame() {
         super("Login");
         this.getContentPane().setLayout(new BorderLayout());
-//        double width = Toolkit.getDefaultToolkit().getScreenSize().width; //得到当前屏幕分辨率的高
-//        double height = Toolkit.getDefaultToolkit().getScreenSize().height;//得到当前屏幕分辨率的宽
+        BGP=new BackgroundPanel((new ImageIcon("C:\\Users\\l4728\\git\\SIMS\\src\\main\\java\\lyh\\SIMS\\frontend\\background.jpg")).getImage());
+        BGP.setBounds(0,0,100,100);
+        new Color(getDefaultCloseOperation());
+        this.add(BGP);
         this.setSize(500,300);//设置大小
         this.setLocationRelativeTo(null);  //设置窗体居中显示
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
