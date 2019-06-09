@@ -185,13 +185,67 @@ public class StudentData {
 			return null;
 	}
 	
+	public Vector getByClass(int grade, int _class) {
+		try {
+			statement = connection.createStatement();
+	        String sql;
+	        sql = "SELECT * FROM Students WHERE Class='"+_class+"' AND "
+	        		+ "Grade = '"+ grade +"' ;";
+	        ResultSet rs = statement.executeQuery(sql);
+	        int id,gender,islocal,chinese,mathematics,english;
+	        String name,phone;
+	        Vector result = new Vector();
+	        // 展开结果集数据库
+	        while(rs.next()){
+	            // 通过字段检索  	
+	        	Vector data = new Vector();
+	        	result.addElement(data);
+	            id  = rs.getInt("ID");
+	            data.addElement(id);
+	            name = rs.getString("Name");
+	            data.addElement(name);
+	            gender = rs.getInt("Gender");
+	            data.addElement(gender);
+	            islocal = rs.getInt("isLocal");
+	            data.addElement(islocal);
+	            data.addElement(grade);
+	            data.addElement(_class);
+	            chinese = rs.getInt("Chinese");
+	            data.addElement(chinese);
+	            mathematics = rs.getInt("Mathematics");
+	            data.addElement(mathematics);
+	            english = rs.getInt("English");
+	            data.addElement(english);
+	            phone = rs.getString("PhoneNumber");
+	            data.addElement(phone);
+	        }
+	        // 完成后关闭
+	        statement.close();
+	        return result;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			return null;
+	}
+	
+	
 	public boolean insert(String[] student) {
 		//TODO
 		return false;
 	}
 	
-	public boolean delete(String[] student) {
+	public boolean delete(int ID) {
 		//TODO
+		try {
+			statement = connection.createStatement();
+			String sql = "DELETE FROM students WHERE ID = '"+ID+"'."; 
+			statement.execute(sql);
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return false;
 	}
 	
