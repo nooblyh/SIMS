@@ -1,6 +1,5 @@
-package lyh.SIMS.frontend;
+package lyh.SIMS.database;
 import java.sql.*;
-import java.util.Vector;
 public class UserData {
 	Connection connection;
 	Statement statement;

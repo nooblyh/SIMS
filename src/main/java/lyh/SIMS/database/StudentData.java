@@ -26,6 +26,82 @@ public class StudentData {
 	    }
 	}
 	
+	public Vector getMeta() {
+		String sql = "DESCRIBE students;";
+		try {
+			statement = connection.createStatement();
+			ResultSet rs = statement.executeQuery(sql);		
+			Vector result = new Vector();
+			while(rs.next())
+				result.add(rs.getString(1));
+			statement.close();
+			return result;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+		
+	}
+	public Vector getBasicMeta() {
+		String sql = "DESCRIBE students;";
+		try {
+			statement = connection.createStatement();
+			ResultSet rs = statement.executeQuery(sql);		
+			Vector result = new Vector();
+			while(rs.next())
+				result.add(rs.getString(1));
+			statement.close();
+			result.remove(7);
+			result.remove(7);
+			result.remove(7);
+			return result;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+		
+	}
+	
+	public Vector getBasic() {
+		try {
+		statement = connection.createStatement();
+        String sql;
+        sql = "SELECT * FROM Students;";
+        ResultSet rs = statement.executeQuery(sql);
+        int id,gender,grade,_class,isLocal;
+        String name,phoneNumber;
+        Vector result = new Vector();
+        // 展开结果集数据库
+        while(rs.next()){
+            // 通过字段检索
+        	Vector data = new Vector();
+        	result.addElement(data);
+            id  = rs.getInt("ID");
+            data.addElement(id);
+            name  = rs.getString("Name");
+            data.addElement(name);
+            gender = rs.getInt("Gender");
+            data.addElement(gender);
+            grade = rs.getInt("Grade");
+            data.addElement(grade);
+            _class = rs.getInt("class");
+            data.addElement(_class);
+            isLocal = rs.getInt("isLocal");
+            data.addElement(isLocal);
+            phoneNumber  = rs.getString("phoneNumber");
+            data.addElement(phoneNumber);
+        }
+        // 完成后关闭
+        statement.close();
+        return result;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public Vector getByName(String name) {
 		try {
 		statement = connection.createStatement();
@@ -127,5 +203,62 @@ public class StudentData {
 	public boolean setByID(String name, String[] attri) {
 		//TODO
 		return false;
+	}
+
+	public Vector getScoreMeta() {
+		// TODO Auto-generated method stub
+		String sql = "DESCRIBE students;";
+		try {
+			statement = connection.createStatement();
+			ResultSet rs = statement.executeQuery(sql);		
+			Vector result = new Vector();
+			while(rs.next())
+				result.add(rs.getString(1));
+			statement.close();
+			result.remove(2);
+			result.remove(2);
+			result.remove(2);
+			result.remove(2);
+			result.remove(2);
+			return result;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public Vector getScore() {
+		// TODO Auto-generated method stub
+		try {
+			int col = getMeta().size();
+			statement = connection.createStatement();
+	        String sql;
+	        sql = "SELECT * FROM Students;";
+	        ResultSet rs = statement.executeQuery(sql);
+	        int id,score;
+	        String name,phoneNumber;
+	        Vector result = new Vector();
+	        // 展开结果集数据库
+	        while(rs.next()){
+	            // 通过字段检索
+	        	Vector data = new Vector();
+	        	result.addElement(data);
+	        	id  = rs.getInt("ID");
+	            data.addElement(id);
+	            name  = rs.getString("Name");
+	            data.addElement(name);
+	        	for(int i=8;i<=col;i++) {
+	        		score  = rs.getInt(i);
+		            data.addElement(score);
+	        	}
+	        }
+	        // 完成后关闭
+	        statement.close();
+	        return result;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		return null;
 	}
 }

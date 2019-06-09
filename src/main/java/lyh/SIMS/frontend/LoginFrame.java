@@ -23,6 +23,8 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import lyh.SIMS.database.UserData;
+
 public class LoginFrame extends JFrame
 implements ActionListener{
 	private BackgroundPanel BGP;
