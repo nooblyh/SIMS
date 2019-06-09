@@ -10,12 +10,14 @@ import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
 
+import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -77,6 +79,15 @@ implements ActionListener{
 	private HomePanel ClassPanel;
 	private JTable ClassTablePanel;
 	private JPanel ClassModifyPanel;
+	private JRadioButton ClassGrade1;
+	private JRadioButton ClassGrade2;
+	private JRadioButton ClassGrade3;
+	private JRadioButton ClassGrade4;
+	private JRadioButton ClassClass1;
+	private JRadioButton ClassClass2;
+	private JRadioButton ClassClass3;
+	private JRadioButton ClassClass4;
+	private JButton ClassConfirm;
 	
 	private HomePanel CoursePanel;
 	private JTable CourseTablePanel;
@@ -91,8 +102,8 @@ implements ActionListener{
 		TabPane.add("Score",ScorePanel);
 		initClassPanel();
 		TabPane.add("Class",ClassPanel);
-		initCoursePanel();
-		TabPane.add("Course",CoursePanel);
+		//initCoursePanel();
+		//TabPane.add("Course",CoursePanel);
 	}
 	
 	
@@ -112,7 +123,7 @@ implements ActionListener{
 
 	private void initCoursePanel() {
 		// TODO Auto-generated method stub
-		 
+		CoursePanel = new HomePanel();
 	}
 
 
@@ -123,8 +134,69 @@ implements ActionListener{
 	private void initClassPanel() {
 		// TODO Auto-generated method stub
 		ClassPanel = new HomePanel();
-		//ClassPanel.add(new JButton());
-
+		ClassPanel.setLayout(new BorderLayout());
+		 StudentData sd = new StudentData();
+		 Vector meta = sd.getMeta();
+		 Vector score = sd.getAll();
+		 ClassTablePanel = new JTable(score,meta);
+		 ClassTablePanel.setFont(new Font("微软雅黑",Font.PLAIN, 20));
+		 DefaultTableCellRenderer r = new DefaultTableCellRenderer();   
+		 r.setHorizontalAlignment(JLabel.CENTER);   
+		 ClassTablePanel.setDefaultRenderer(Object.class, r);
+		 ClassTablePanel.setRowHeight(24);
+		 JScrollPane ScrollPanel=new JScrollPane(ClassTablePanel);
+		 ScrollPanel.setPreferredSize(new Dimension(1500,0));
+		 ClassPanel.add(BorderLayout.EAST,ScrollPanel);
+		 ClassModifyPanel = new JPanel();
+		 ClassModifyPanel.setLayout(new GridLayout(11,1));
+		 ClassModifyPanel.setPreferredSize(new Dimension(300,0));
+		 ClassModifyPanel.setBackground(null);
+		 ClassModifyPanel.setOpaque(false);
+		 ClassGrade1 = new JRadioButton("大一");
+		 ClassGrade2 = new JRadioButton("大二");
+		 ClassGrade3 = new JRadioButton("大三");
+		 ClassGrade4 = new JRadioButton("大四");
+		 ClassGrade1.setOpaque(false);
+		 ClassGrade2.setOpaque(false);
+		 ClassGrade3.setOpaque(false);
+		 ClassGrade4.setOpaque(false);
+		 ButtonGroup Grade = new ButtonGroup();
+		 Grade.add(ClassGrade1);
+		 Grade.add(ClassGrade2);
+		 Grade.add(ClassGrade3);
+		 Grade.add(ClassGrade4);
+		 ClassClass1 = new JRadioButton("一班");
+		 ClassClass2 = new JRadioButton("二班");
+		 ClassClass3 = new JRadioButton("三班");
+		 ClassClass4 = new JRadioButton("四班");
+		 ClassClass1.setOpaque(false);
+		 ClassClass2.setOpaque(false);
+		 ClassClass3.setOpaque(false);
+		 ClassClass4.setOpaque(false);
+		 ButtonGroup Class = new ButtonGroup();
+		 Class.add(ClassClass1);
+		 Class.add(ClassClass2);
+		 Class.add(ClassClass3);
+		 Class.add(ClassClass4);
+		 JLabel head1 = new JLabel("选择年级",JLabel.CENTER);
+		 head1.setFont(new Font("Dialog", 1, 30));
+		 ClassModifyPanel.add(head1);
+		 ClassModifyPanel.add(ClassGrade1);
+		 ClassModifyPanel.add(ClassGrade2);
+		 ClassModifyPanel.add(ClassGrade3);
+		 ClassModifyPanel.add(ClassGrade4);
+		 JLabel head2 = new JLabel("选择班级",JLabel.CENTER);
+		 head2.setFont(new Font("Dialog", 1, 30));
+		 ClassModifyPanel.add(head2);
+		 ClassModifyPanel.add(ClassClass1);
+		 ClassModifyPanel.add(ClassClass2);
+		 ClassModifyPanel.add(ClassClass3);
+		 ClassModifyPanel.add(ClassClass4);
+		 ClassConfirm = new JButton("确定");
+		 ClassModifyPanel.add(ClassConfirm);
+		 ClassPanel.add(BorderLayout.WEST,ClassModifyPanel);
+		 
+		 
 	}
 
 
@@ -214,11 +286,11 @@ implements ActionListener{
 		 head1.setFont(new Font("Dialog", 1, 30));
 		 addCom(head1,BasicModifyPanel,c,0,1,1,1,0.1,0.1);
 		 addCom(new JLabel("学号："),BasicModifyPanel,c,1,0,1,1,0.1,0.1);
-		 BasicName = new JTextField(12);
-		 addCom(BasicName,BasicModifyPanel,c,1,0,1,2,0.1,0.1);
+		 BasicID = new JTextField(12);
+		 addCom(BasicID,BasicModifyPanel,c,1,0,1,2,0.1,0.1);
 		 Search = new JButton("Search");
 		 addCom(Search,BasicModifyPanel,c,1,2,1,1,0.1,0.1);
-		 BasicConfirm = new JButton("Confirm");
+		 BasicConfirm = new JButton("确定");
 		 BasicName = new JTextField(12);
 		 addCom(new JLabel("姓名："),BasicModifyPanel,c,6,0,1,1,0.1,0.1);
 		 addCom(BasicName,BasicModifyPanel,c,6,0,1,2,0.1,0.1);

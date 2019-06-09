@@ -40,9 +40,50 @@ public class StudentData {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
-		
+		return null;	
 	}
+	
+	public Vector getAll() {
+		String sql = "SELECT * from students;";
+		try {
+			statement = connection.createStatement();
+			ResultSet rs = statement.executeQuery(sql);		
+			Vector result = new Vector();
+			int id,gender,grade,_class,islocal,chinese,mathematics,english;
+	        String name,phone;
+			while(rs.next()) {
+				Vector data = new Vector();
+	        	result.addElement(data);
+	            id  = rs.getInt("ID");
+	            data.addElement(id);
+	            name = rs.getString("Name");
+	            data.addElement(name);
+	            gender = rs.getInt("Gender");
+	            data.addElement(gender);
+	            islocal = rs.getInt("isLocal");
+	            data.addElement(islocal);
+	            grade = rs.getInt("grade");
+	            data.addElement(grade);
+	            _class = rs.getInt("class");
+	            data.addElement(_class);
+	            chinese = rs.getInt("Chinese");
+	            data.addElement(chinese);
+	            mathematics = rs.getInt("Mathematics");
+	            data.addElement(mathematics);
+	            english = rs.getInt("English");
+	            data.addElement(english);
+	            phone = rs.getString("PhoneNumber");
+	            data.addElement(phone);
+			}
+				statement.close();
+			return result;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;	
+	}
+	
 	public Vector getBasicMeta() {
 		String sql = "DESCRIBE students;";
 		try {
