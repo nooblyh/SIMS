@@ -158,8 +158,18 @@ public class StudentData {
 		return false;
 	}
 	
-	public boolean delete(String[] student) {
+	public boolean delete(int ID) {
 		//TODO
+		try {
+			statement = connection.createStatement();
+			String sql = "DELETE FROM students WHERE ID = '"+ID+"'."; 
+			statement.execute(sql);
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return false;
 	}
 	
