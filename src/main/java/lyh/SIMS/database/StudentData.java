@@ -74,14 +74,15 @@ public class StudentData {
 	            data.addElement(grade);
 	            _class = rs.getInt("class");
 	            data.addElement(_class);
+	            phone = rs.getString("PhoneNumber");
+	            data.addElement(phone);
 	            chinese = rs.getInt("Chinese");
 	            data.addElement(chinese);
 	            mathematics = rs.getInt("Mathematics");
 	            data.addElement(mathematics);
 	            english = rs.getInt("English");
 	            data.addElement(english);
-	            phone = rs.getString("PhoneNumber");
-	            data.addElement(phone);
+	            
 			}
 				statement.close();
 			return result;
@@ -256,19 +257,26 @@ public class StudentData {
 	            name = rs.getString("Name");
 	            data.addElement(name);
 	            gender = rs.getInt("Gender");
-	            data.addElement(gender);
+	            if(gender == 1)
+	            	data.addElement("男");
+	            else
+	            	data.addElement("女");
 	            islocal = rs.getInt("isLocal");
-	            data.addElement(islocal);
+	            if(gender == 1)
+	            	data.addElement("本地生");
+	            else
+	            	data.addElement("外地生");
 	            data.addElement(grade);
 	            data.addElement(_class);
+	            phone = rs.getString("PhoneNumber");
+	            data.addElement(phone);
 	            chinese = rs.getInt("Chinese");
 	            data.addElement(chinese);
 	            mathematics = rs.getInt("Mathematics");
 	            data.addElement(mathematics);
 	            english = rs.getInt("English");
 	            data.addElement(english);
-	            phone = rs.getString("PhoneNumber");
-	            data.addElement(phone);
+	            
 	        }
 	        // 完成后关闭
 	        statement.close();
@@ -351,7 +359,7 @@ public class StudentData {
 		//TODO
 		try {
 			statement = connection.createStatement();
-			String sql = "UPDATE FROM students SET "
+			String sql = "UPDATE students SET "
 				+Subject+ "='"+Score
 						+ "' WHERE ID = '"+ID+"';"; 
 			statement.execute(sql);

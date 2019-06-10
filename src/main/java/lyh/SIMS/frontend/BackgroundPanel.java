@@ -13,7 +13,7 @@ class BackgroundPanel extends JPanel
         this.im=im;  
         this.setOpaque(false);                    //设置控件不透明,若是false,那么就是透明
     }  
-    //Draw the background again,继承自Jpanle,是Swing控件需要继承实现的方法,而不是AWT中的Paint()
+    //Draw the background again,继承自Jpanel,是Swing控件需要继承实现的方法,而不是AWT中的Paint()
     public void paintComponent(Graphics g)       //绘图类,详情可见博主的Java 下 java-Graphics 
     {  
         super.paintComponents(g);  

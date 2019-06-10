@@ -323,6 +323,7 @@ implements ActionListener{
 		 ScoreModifyPanel.add(Score);
 		 
 		 ScoreConfirm = new JButton("确定");
+		 ScoreConfirm.addActionListener(this);
 		 ScoreConfirm.setBounds(50, 850, 100, 50);
 		 ScoreModifyPanel.add(ScoreConfirm);
 		 
@@ -501,6 +502,26 @@ implements ActionListener{
 			TabPane.add(ClassPanel, 3);
 			TabPane.setTitleAt(3, "Class");
 			TabPane.setSelectedIndex(3);
+		}
+		
+		if(ScoreConfirm==(JButton)e.getSource()) {
+			int ID = Integer.valueOf(ScoreID.getText());
+			String subject = Subject.getText();
+			int score = Integer.valueOf(Score.getText());
+			StudentData sd = new StudentData();
+			if(sd.ScoreSet(ID, subject, score)) {
+				JOptionPane.showMessageDialog(null, "修改成功！", "SIMS",JOptionPane.INFORMATION_MESSAGE);
+				TabPane.remove(2);
+				ScorePanel.removeAll();
+				ScorePanel.repaint();
+				initScorePanel();
+				ScorePanel.setVisible(true);
+				TabPane.add(ScorePanel, 2);
+				TabPane.setTitleAt(2, "Score");
+				TabPane.setSelectedIndex(2);
+			}
+			else
+				JOptionPane.showMessageDialog(null, "修改失败！", "SIMS",JOptionPane.INFORMATION_MESSAGE);
 		}
 		
 		
