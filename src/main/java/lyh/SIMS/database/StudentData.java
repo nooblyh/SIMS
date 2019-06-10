@@ -26,6 +26,8 @@ public class StudentData {
 	    }
 	}
 	
+	
+	
 	public Vector getMeta() {
 		String sql = "DESCRIBE students;";
 		try {
@@ -280,6 +282,9 @@ public class StudentData {
 	
 	public boolean BasicSet(String[] student) {
 		//TODO
+		for(int i=0;i<student[6].length();i++)
+			if(student[6].charAt(i)>'9'||student[6].charAt(i)<'0')
+				return false;
 		try {
 			statement = connection.createStatement();
 			String sql;
@@ -303,6 +308,9 @@ public class StudentData {
 	
 	public boolean BasicInsert(String[] student) {
 		//TODO
+		for(int i=0;i<student[6].length();i++) 
+			if(student[6].charAt(i)>'9'||student[6].charAt(i)<'0')
+				return false;
 		try {
 			statement = connection.createStatement();
 			String sql;
@@ -328,7 +336,24 @@ public class StudentData {
 		//TODO
 		try {
 			statement = connection.createStatement();
-			String sql = "DELETE FROM students WHERE ID = '"+ID+"'."; 
+			String sql = "DELETE FROM students WHERE ID = '"+ID+"';"; 
+			statement.execute(sql);
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+	
+	public boolean ScoreSet(int ID,String Subject,int Score) {
+		//TODO
+		try {
+			statement = connection.createStatement();
+			String sql = "UPDATE FROM students SET "
+				+Subject+ "='"+Score
+						+ "' WHERE ID = '"+ID+"';"; 
 			statement.execute(sql);
 			return true;
 		} catch (SQLException e) {

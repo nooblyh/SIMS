@@ -1,6 +1,7 @@
 package lyh.SIMS.frontend;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -51,6 +52,7 @@ implements ActionListener{
 	private JPanel BasicModifyPanel;
 	private JTextField BasicID;
 	private JButton Search;
+	private JButton Delete;
 	private JTextField BasicName;
 	private JRadioButton male;
 	private JRadioButton female;
@@ -196,13 +198,82 @@ implements ActionListener{
 		 ClassModifyPanel.add(ClassClass3);
 		 ClassModifyPanel.add(ClassClass4);
 		 ClassConfirm = new JButton("确定");
+		 ClassConfirm.addActionListener(this);
 		 ClassModifyPanel.add(ClassConfirm);
 		 ClassPanel.add(BorderLayout.WEST,ClassModifyPanel);
 		 
 		 
 	}
 
-
+	private void initClassPanel(int grade,int _class) {
+		// TODO Auto-generated method stub
+		ClassPanel = new HomePanel();
+		ClassPanel.setLayout(new BorderLayout());
+		 StudentData sd = new StudentData();
+		 Vector meta = sd.getMeta();
+		 Vector score = sd.getByClass(grade,_class);
+		 ClassTablePanel = new JTable(score,meta);
+		 ClassTablePanel.setFont(new Font("微软雅黑",Font.PLAIN, 20));
+		 DefaultTableCellRenderer r = new DefaultTableCellRenderer();   
+		 r.setHorizontalAlignment(JLabel.CENTER);   
+		 ClassTablePanel.setDefaultRenderer(Object.class, r);
+		 ClassTablePanel.setRowHeight(24);
+		 ClassTablePanel.setEnabled(false);
+		 JScrollPane ScrollPanel=new JScrollPane(ClassTablePanel);
+		 ScrollPanel.setPreferredSize(new Dimension(1500,0));
+		 ClassPanel.add(BorderLayout.EAST,ScrollPanel);
+		 ClassModifyPanel = new JPanel();
+		 ClassModifyPanel.setLayout(new GridLayout(11,1));
+		 ClassModifyPanel.setPreferredSize(new Dimension(300,0));
+		 ClassModifyPanel.setBackground(null);
+		 ClassModifyPanel.setOpaque(false);
+		 ClassGrade1 = new JRadioButton("大一");
+		 ClassGrade2 = new JRadioButton("大二");
+		 ClassGrade3 = new JRadioButton("大三");
+		 ClassGrade4 = new JRadioButton("大四");
+		 ClassGrade1.setOpaque(false);
+		 ClassGrade2.setOpaque(false);
+		 ClassGrade3.setOpaque(false);
+		 ClassGrade4.setOpaque(false);
+		 ButtonGroup Grade = new ButtonGroup();
+		 Grade.add(ClassGrade1);
+		 Grade.add(ClassGrade2);
+		 Grade.add(ClassGrade3);
+		 Grade.add(ClassGrade4);
+		 ClassClass1 = new JRadioButton("一班");
+		 ClassClass2 = new JRadioButton("二班");
+		 ClassClass3 = new JRadioButton("三班");
+		 ClassClass4 = new JRadioButton("四班");
+		 ClassClass1.setOpaque(false);
+		 ClassClass2.setOpaque(false);
+		 ClassClass3.setOpaque(false);
+		 ClassClass4.setOpaque(false);
+		 ButtonGroup Class = new ButtonGroup();
+		 Class.add(ClassClass1);
+		 Class.add(ClassClass2);
+		 Class.add(ClassClass3);
+		 Class.add(ClassClass4);
+		 JLabel head1 = new JLabel("选择年级",JLabel.CENTER);
+		 head1.setFont(new Font("Dialog", 1, 30));
+		 ClassModifyPanel.add(head1);
+		 ClassModifyPanel.add(ClassGrade1);
+		 ClassModifyPanel.add(ClassGrade2);
+		 ClassModifyPanel.add(ClassGrade3);
+		 ClassModifyPanel.add(ClassGrade4);
+		 JLabel head2 = new JLabel("选择班级",JLabel.CENTER);
+		 head2.setFont(new Font("Dialog", 1, 30));
+		 ClassModifyPanel.add(head2);
+		 ClassModifyPanel.add(ClassClass1);
+		 ClassModifyPanel.add(ClassClass2);
+		 ClassModifyPanel.add(ClassClass3);
+		 ClassModifyPanel.add(ClassClass4);
+		 ClassConfirm = new JButton("确定");
+		 ClassConfirm.addActionListener(this);
+		 ClassModifyPanel.add(ClassConfirm);
+		 ClassPanel.add(BorderLayout.WEST,ClassModifyPanel);
+		 
+		 
+	}
 
 
 
@@ -296,6 +367,10 @@ implements ActionListener{
 		 Search = new JButton("查找");
 		 Search.addActionListener(this);
 		 addCom(Search,BasicModifyPanel,c,1,2,1,1,0.1,0.1);
+		 Delete = new JButton("删除记录");
+		 Delete.setBackground(Color.RED);
+		 Delete.addActionListener(this);
+		 addCom(Delete,BasicModifyPanel,c,1,3,1,1,0.1,0.1);
 		 BasicConfirm = new JButton("确定");
 		 BasicConfirm.addActionListener(this);
 		 BasicName = new JTextField(12);
@@ -397,6 +472,56 @@ implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
+		if(ClassConfirm==(JButton)e.getSource()) {
+			int grade = 0,_class = 0;
+			if(ClassGrade1.isSelected())
+				grade =  1;
+			if(ClassGrade2.isSelected())
+				grade =  2;
+			if(ClassGrade3.isSelected())
+				grade =  3;
+			if(ClassGrade4.isSelected())
+				grade =  4;
+			if(ClassClass1.isSelected())
+				_class = 1;
+			if(ClassClass2.isSelected())
+				_class = 2;
+			if(ClassClass3.isSelected())
+				_class = 3;
+			if(ClassClass4.isSelected())
+				_class = 4;
+			TabPane.remove(3);
+			ClassPanel.removeAll();
+			ClassPanel.repaint();
+			if(grade == 0&&_class == 0)
+				initClassPanel();
+			else
+				initClassPanel(grade,_class);
+			ClassPanel.setVisible(false);
+			TabPane.add(ClassPanel, 3);
+			TabPane.setTitleAt(3, "Class");
+			TabPane.setSelectedIndex(3);
+		}
+		
+		
+		if(Delete==(JButton)e.getSource()) {
+			StudentData sd = new StudentData();
+			if(sd.delete(Integer.valueOf(BasicID.getText()))) {
+				JOptionPane.showMessageDialog(null, "删除成功！", "SIMS",JOptionPane.INFORMATION_MESSAGE);
+				TabPane.remove(1);
+				BasicPanel.removeAll();
+				BasicPanel.repaint();
+				initBasicPanel();
+				BasicPanel.setVisible(true);
+				TabPane.add(BasicPanel, 1);
+				TabPane.setTitleAt(1, "Basic");
+				TabPane.setSelectedIndex(1);
+			}
+			else
+				JOptionPane.showMessageDialog(null, "学生不存在！", "SIMS",JOptionPane.INFORMATION_MESSAGE);
+				
+		}
+		
 		if(Search==(JButton)e.getSource()) {
 			StudentData sd = new StudentData();
 			Vector student = sd.getByID(Integer.valueOf(BasicID.getText()));
