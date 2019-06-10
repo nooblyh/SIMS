@@ -59,9 +59,15 @@ public class StudentData {
 	            name = rs.getString("Name");
 	            data.addElement(name);
 	            gender = rs.getInt("Gender");
-	            data.addElement(gender);
+	            if(gender == 1)
+	            	data.addElement("男");
+	            else
+	            	data.addElement("女");
 	            islocal = rs.getInt("isLocal");
-	            data.addElement(islocal);
+	            if(gender == 1)
+	            	data.addElement("本地生");
+	            else
+	            	data.addElement("外地生");
 	            grade = rs.getInt("grade");
 	            data.addElement(grade);
 	            _class = rs.getInt("class");
@@ -124,13 +130,19 @@ public class StudentData {
             name  = rs.getString("Name");
             data.addElement(name);
             gender = rs.getInt("Gender");
-            data.addElement(gender);
+            if(gender == 1)
+            	data.addElement("男");
+            else
+            	data.addElement("女");
             grade = rs.getInt("Grade");
             data.addElement(grade);
             _class = rs.getInt("class");
             data.addElement(_class);
             isLocal = rs.getInt("isLocal");
-            data.addElement(isLocal);
+            if(gender == 1)
+            	data.addElement("本地生");
+            else
+            	data.addElement("外地生");
             phoneNumber  = rs.getString("phoneNumber");
             data.addElement(phoneNumber);
         }
@@ -149,7 +161,8 @@ public class StudentData {
         String sql;
         sql = "SELECT * FROM Students WHERE Name='"+name+"';";
         ResultSet rs = statement.executeQuery(sql);
-        int id,gender,chinese,mathematics,english;
+        int id,gender,grade,_class,islocal,chinese,mathematics,english;
+        String phone;
         Vector result = new Vector();
         // 展开结果集数据库
         while(rs.next()){
@@ -161,20 +174,20 @@ public class StudentData {
             data.addElement(name);
             gender = rs.getInt("Gender");
             data.addElement(gender);
+            grade = rs.getInt("Grade");
+            data.addElement(grade);
+            _class = rs.getInt("Class");
+            data.addElement(_class);
+            islocal = rs.getInt("isLocal");
+            data.addElement(islocal);
             chinese = rs.getInt("Chinese");
             data.addElement(chinese);
             mathematics = rs.getInt("Mathematics");
             data.addElement(mathematics);
             english = rs.getInt("English");
             data.addElement(english);
-            // 输出数据
-            System.out.print("id: " + id);
-            System.out.print(", name: " + name);
-            System.out.print(", gender: " + gender);
-            System.out.print(", chinese: " + chinese);
-            System.out.print(", mathematics: " + mathematics);
-            System.out.print(", english: " + english);
-            System.out.print("\n");
+            phone = rs.getString("PhoneNumber");
+            data.addElement(phone); 
         }
         // 完成后关闭
         statement.close();
@@ -191,31 +204,26 @@ public class StudentData {
 	        String sql;
 	        sql = "SELECT * FROM Students WHERE ID='"+ID+"';";
 	        ResultSet rs = statement.executeQuery(sql);
-	        int gender,chinese,mathematics,english;
-	        String name;
+	        int id,gender,grade,_class,isLocal;
+	        String name,phoneNumber;
 	        Vector result = new Vector();
 	        // 展开结果集数据库
 	        while(rs.next()){
 	            // 通过字段检索
-	        	result.addElement(ID);
-	        	name  = rs.getString("Name");
+	            id  = rs.getInt("ID");
+	            result.addElement(id);
+	            name  = rs.getString("Name");
 	            result.addElement(name);
 	            gender = rs.getInt("Gender");
 	            result.addElement(gender);
-	            chinese = rs.getInt("Chinese");
-	            result.addElement(chinese);
-	            mathematics = rs.getInt("Mathematics");
-	            result.addElement(mathematics);
-	            english = rs.getInt("English");
-	            result.addElement(english);
-	            // 输出数据
-	            System.out.print("id: " + ID);
-	            System.out.print(", name: " + name);
-	            System.out.print(", gender: " + gender);
-	            System.out.print(", chinese: " + chinese);
-	            System.out.print(", mathematics: " + mathematics);
-	            System.out.print(", english: " + english);
-	            System.out.print("\n");
+	            grade = rs.getInt("Grade");
+	            result.addElement(grade);
+	            _class = rs.getInt("class");
+	            result.addElement(_class);
+	            isLocal = rs.getInt("isLocal");
+	            result.addElement(isLocal);
+	            phoneNumber  = rs.getString("phoneNumber");
+	            result.addElement(phoneNumber);
 	        }
 	        // 完成后关闭
 	        statement.close();
@@ -270,8 +278,49 @@ public class StudentData {
 	}
 	
 	
-	public boolean insert(String[] student) {
+	public boolean BasicSet(String[] student) {
 		//TODO
+		try {
+			statement = connection.createStatement();
+			String sql;
+			sql = "UPDATE students SET Name = '"
+					+ student[1]+"', Gender = '"
+					+ student[2]+"', Grade ='"
+					+ student[3]+"', Class ='"
+					+ student[4]+"', isLocal ='"
+					+ student[5]+"', PhoneNumber ='"
+					+ student[6]+"' WHERE ID = '"
+					+ student[0]+"';";
+			statement.execute(sql);
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+		return false;
+	}
+	
+	public boolean BasicInsert(String[] student) {
+		//TODO
+		try {
+			statement = connection.createStatement();
+			String sql;
+			sql = "INSERT INTO students (ID,Name,Gender,Grade,Class,isLocal,PhoneNumber)VALUES ('"
+					+ student[0]+"',  '"
+					+ student[1]+"',  '"
+					+ student[2]+"',  '"
+					+ student[3]+"',  '"
+					+ student[4]+"',  '"
+					+ student[5]+"',  '"
+					+ student[6]+"');";
+			statement.execute(sql);
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
 		return false;
 	}
 	

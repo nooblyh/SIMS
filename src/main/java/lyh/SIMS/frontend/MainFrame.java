@@ -15,6 +15,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.Vector;
 
 import javax.swing.BoxLayout;
@@ -24,6 +25,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -144,6 +146,7 @@ implements ActionListener{
 		 r.setHorizontalAlignment(JLabel.CENTER);   
 		 ClassTablePanel.setDefaultRenderer(Object.class, r);
 		 ClassTablePanel.setRowHeight(24);
+		 ClassTablePanel.setEnabled(false);
 		 JScrollPane ScrollPanel=new JScrollPane(ClassTablePanel);
 		 ScrollPanel.setPreferredSize(new Dimension(1500,0));
 		 ClassPanel.add(BorderLayout.EAST,ScrollPanel);
@@ -216,6 +219,7 @@ implements ActionListener{
 		 r.setHorizontalAlignment(JLabel.CENTER);   
 		 ScoreTablePanel.setDefaultRenderer(Object.class, r);
 		 ScoreTablePanel.setRowHeight(24);
+		 ScoreTablePanel.setEnabled(false);
 		 JScrollPane ScrollPanel=new JScrollPane(ScoreTablePanel);
 		 ScrollPanel.setPreferredSize(new Dimension(1500,0));
 		 ScorePanel.add(BorderLayout.EAST,ScrollPanel);
@@ -272,6 +276,7 @@ implements ActionListener{
 		 r.setHorizontalAlignment(JLabel.CENTER);   
 		 BasicTablePanel.setDefaultRenderer(Object.class, r);
 		 BasicTablePanel.setRowHeight(24);
+		 BasicTablePanel.setEnabled(false);
 		 JScrollPane ScrollPanel=new JScrollPane(BasicTablePanel);
 		 ScrollPanel.setPreferredSize(new Dimension(1000,0));
 		 BasicPanel.add(BorderLayout.EAST,ScrollPanel);
@@ -288,9 +293,11 @@ implements ActionListener{
 		 addCom(new JLabel("学号："),BasicModifyPanel,c,1,0,1,1,0.1,0.1);
 		 BasicID = new JTextField(12);
 		 addCom(BasicID,BasicModifyPanel,c,1,0,1,2,0.1,0.1);
-		 Search = new JButton("Search");
+		 Search = new JButton("查找");
+		 Search.addActionListener(this);
 		 addCom(Search,BasicModifyPanel,c,1,2,1,1,0.1,0.1);
 		 BasicConfirm = new JButton("确定");
+		 BasicConfirm.addActionListener(this);
 		 BasicName = new JTextField(12);
 		 addCom(new JLabel("姓名："),BasicModifyPanel,c,6,0,1,1,0.1,0.1);
 		 addCom(BasicName,BasicModifyPanel,c,6,0,1,2,0.1,0.1);
@@ -390,6 +397,104 @@ implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
+		if(Search==(JButton)e.getSource()) {
+			StudentData sd = new StudentData();
+			Vector student = sd.getByID(Integer.valueOf(BasicID.getText()));
+			BasicName.setText(student.get(1).toString());
+			if((int)student.get(2)==1)
+				male.setSelected(true);
+			else
+				female.setSelected(true);
+			if((int)student.get(3)==1)
+				BasicGrade1.setSelected(true);
+			if((int)student.get(3)==2)
+				BasicGrade2.setSelected(true);
+			if((int)student.get(3)==3)
+				BasicGrade3.setSelected(true);
+			if((int)student.get(3)==4)
+				BasicGrade4.setSelected(true);
+			if((int)student.get(4)==1)
+				BasicClass1.setSelected(true);
+			if((int)student.get(4)==2)
+				BasicClass2.setSelected(true);
+			if((int)student.get(4)==3)
+				BasicClass3.setSelected(true);
+			if((int)student.get(4)==4)
+				BasicClass4.setSelected(true);
+			if((int)student.get(5)==1)
+				Local.setSelected(true);
+			else
+				nonLocal.setSelected(true);
+			PhoneNumber.setText(student.get(6).toString());
+		}
+		if(BasicConfirm==(JButton)e.getSource()) {
+			boolean modify = true;
+			StudentData sd = new StudentData();
+			String student[] = new String[7];
+			student[0] = BasicID.getText();
+			student[1] = BasicName.getText();
+			if(male.isSelected())
+				student[2] = "1";
+			else
+				student[2] = "0";
+			if(BasicGrade1.isSelected())
+				student[3] = "1";
+			if(BasicGrade2.isSelected())
+				student[3] = "2";
+			if(BasicGrade3.isSelected())
+				student[3] = "3";
+			if(BasicGrade4.isSelected())
+				student[3] = "4";
+			if(BasicClass1.isSelected())
+				student[4] = "1";
+			if(BasicClass2.isSelected())
+				student[4] = "2";
+			if(BasicClass3.isSelected())
+				student[4] = "3";
+			if(BasicClass4.isSelected())
+				student[4] = "4";
+			if(Local.isSelected())
+				student[5] = "1";
+			else
+				student[5] = "0";
+			student[6] = PhoneNumber.getText();
+			try{
+				Vector retrive= sd.getByID(Integer.valueOf(BasicID.getText()));
+				if(retrive.size()==0)
+					throw new NumberFormatException();
+			}catch (NumberFormatException e1) {	
+				JOptionPane.showMessageDialog(null, "用户不存在，将增加学生信息！", "SIMS",JOptionPane.INFORMATION_MESSAGE);
+				if(sd.BasicInsert(student)) {
+					JOptionPane.showMessageDialog(null, "增加成功！", "SIMS",JOptionPane.INFORMATION_MESSAGE);
+					TabPane.remove(1);
+					BasicPanel.removeAll();
+					BasicPanel.repaint();
+					initBasicPanel();
+					BasicPanel.setVisible(true);
+					TabPane.add(BasicPanel, 1);
+					TabPane.setTitleAt(1, "Basic");
+					TabPane.setSelectedIndex(1);
+				}
+				else
+					JOptionPane.showMessageDialog(null, "增加失败，请正确填写！", "SIMS",JOptionPane.INFORMATION_MESSAGE);
+				modify = false;
+			}
+			if(modify) {
+				if(sd.BasicSet(student)) {
+					JOptionPane.showMessageDialog(null, "修改成功！", "SIMS",JOptionPane.INFORMATION_MESSAGE);
+					TabPane.remove(1);
+					BasicPanel.removeAll();
+					BasicPanel.repaint();
+					initBasicPanel();
+					BasicPanel.setVisible(true);
+					TabPane.add(BasicPanel, 1);
+					TabPane.setTitleAt(1, "Basic");
+					TabPane.setSelectedIndex(1);
+				}
+				else
+					JOptionPane.showMessageDialog(null, "修改失败，请正确填写！", "SIMS",JOptionPane.INFORMATION_MESSAGE);
+			}
+		}
 		
 	}
 }
